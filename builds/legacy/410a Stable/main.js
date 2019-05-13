@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://obscure-stream-84327.herokuapp.com");
+var socket = new WebSocket(" "); // heroku server url
 //var socket = new WebSocket("ws://localhost:3000");
 
 let name;
