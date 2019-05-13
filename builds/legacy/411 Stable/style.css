@@ -1,0 +1,113 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    background-color: #333333;
+}
+
+#container {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+#header {
+    width: 100%;
+    background-color: #757575;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#header h1 {
+    color: white;
+    margin: 0;
+    font-size: 12pt;
+}
+
+#filler {
+    flex: 1 1 auto;	
+}
+
+#msglist {
+    height: calc(100% - 50px);
+    background-color: #333333;
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#msglist::-webkit-scrollbar {
+    display: none;
+}
+
+.message {
+    background-color: #5b5b5b;
+	height: min-content;
+    padding: 10px;
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 3px;
+    color: white;
+	flex: 0 1 auto;	
+	word-wrap: break-word;
+}
+
+#controls {
+    width: 100%;
+    bottom: 0;
+    padding-top: 10px;
+	padding-bottom: 10px;
+    flex-shrink: 0;
+    height: 50px;
+}
+
+form {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#input {
+    background-color: #666666;
+    color: white;
+    margin: 10px;
+	width: 100%;
+    height: 40px;
+    padding-left: 5px;
+    font-size: 11pt;
+	border-radius: 4px;
+	border: 0;
+}
+
+#input:focus {
+	outline: none;
+}
+
+.authorlabel {
+	color: #84ff9f;
+}
+
+#imageupload {
+	background-color: #666666;
+	color: white;
+	margin: 10px;
+	margin-left: 0;
+	height: 40px;
+	font-size: 11pt;
+	border-radius: 4px;
+	border: 0;
+	width: 40px;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 40px;
+}
+
+img {
+	width: 400px;
+}

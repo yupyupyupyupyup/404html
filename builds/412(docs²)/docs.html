@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Google Docs</title>
+		<link href="docs.css" rel="stylesheet" type="text/css"></link>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<div id="headerTop">
+					<img id="docsLogo" src="docs.png" />
+					<div id="headerSide">
+						<input id="docTitle" value="Untitled document" />
+						<div id="menuActions">
+							<div class="menuAction">File</div>
+							<div class="menuAction">Edit</div>
+							<div class="menuAction">View</div>
+							<div class="menuAction">Insert</div>
+							<div class="menuAction">Format</div>
+							<div class="menuAction">Tools</div>
+							<div class="menuAction">Add-ons</div>
+							<div class="menuAction">Help</div>
+							<div class="menuAction">Accessibility</div>
+
+							<div id="savedText">All changes saved in Drive</div>
+						</div>
+						<div id="headerActions"></div>
+					</div>
+				</div>
+				<div class="seperator" id="headerSeperator"></div>
+				<div id="headerLower"></div>
+			</div>
+			
+			<div id="pageContainer">
+				<div id="page">
+					<div id="main">
+						<div id="msglist">
+							<div id="filler"></div>
+						</div>
+						<form autocomplete="off" spellcheck="false" onsubmit="return send()">
+							<input id="input" placeholder="Message" />
+							<div id="imageupload" onclick="uploadImage()">img</div>
+						</form>		
+					</div>
+					<div id="hidden">
+						<textarea id="textarea"></textarea>
+					</div>
+				</div>
+			</div>
+			<div id="sidebar"></div>
+			<div id="sideRuler"></div>
+		</div>
+		<script src="docs.js" type="text/javascript"></script>
+		<script src="main.js" type="text/javascript"></script>
+	</body>
+</html>

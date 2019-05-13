@@ -1,0 +1,5 @@
+Green: #789922
+Dark grey: #1c1c1c
+Dark grey alt: #232323
+Grey: #3c3c3c
+Maroon: #7c2d2d

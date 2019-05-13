@@ -1,0 +1,291 @@
+<html>
+	<head>
+		<title>Google</title>
+		<link href="https://www.google.com/s2/favicons?domain=google.com" rel="icon">
+		<style>
+			html, body {
+				margin: 0;
+				padding: 0;
+				font-family: sans-serif;
+			}
+			#container {
+				display: flex;
+				height: 100vh;
+				max-height: 100vh;
+				flex-flow: column;
+				min-height: min-content;
+				overflow: hidden;
+			}
+			#listcontainer {
+				flex: 1;
+				overflow: hidden;
+			}
+			#received {
+				height: calc(100% - 80px);
+				background-color: #1e1e1e;
+				color: white;
+				display: flex;
+				list-style: none;
+				flex-direction: column;
+				overflow: scroll;
+				padding-bottom: 50px;
+			}
+			#filler {
+				flex: 1 1 auto;	
+			}
+			#controls {
+				height: 70px;
+				margin: 0;
+				background-color: #3f3f3f;
+				color: white;
+			}
+			form {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				margin: 0;
+			}
+			input {
+				background-color: #515151;
+				margin: 3px;
+				outline: none;
+				border: 0;
+				height: 35px;
+				color: white;
+				font-size: 12pt;
+			}
+			#name {
+				padding-left: 10px;
+			}
+			#input {
+				width: 100%;
+				padding-left: 10px;
+			}
+			li {
+				margin: 3px;
+			}
+			#usertypingtext {
+				margin: 0;
+				margin-left: 10px;
+			}
+			#userlist {
+				position: absolute;
+				top: 0;
+				right: 0;
+				color: white;
+				background-color: grey;
+				height: 200px;
+				width: 100px;
+				list-style: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="listcontainer">
+				<div id="received">
+					<div id="filler"></div>
+				</div>
+				<div id="userlist">
+				</div>
+			</div>
+			<div id="controls">
+				<form autocomplete="off" spellcheck="false" onsubmit="return send()">
+					<input oninput="inputChange()" id="input" placeholder="message" />
+					<input type="submit" value="send">
+				</form>
+				<p id="usertypingtext"></p>
+			</div>
+		</div>
+		<script>
+			let received = [];
+			let global_url = "https://httprelay.io/mcast/example739";
+			let name = 'TEMP';
+			let userTypeTimeout;
+			let userTypeEl = document.getElementById("usertypingtext");
+			let userTypingList = [];
+			let onlineuserslist = [];
+			let userListEl = document.getElementById("userlist");
+			function requestName() {
+				name = prompt('ENTER YOUR NAME');
+				if(name.toUpperCase() === 'SEER') {
+					alert('your name cannot be server!');
+					requestName();
+				}
+			}
+			function httpGet(theUrl)
+			{
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function() { 
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						let obj = JSON.parse(xmlHttp.responseText);
+						if(!received.includes(obj.id)) {	
+							if(obj.msg) {
+								received.push(obj.id);
+								let el = document.createElement("li");
+								el.innerHTML = "<b>" + obj.author + "</b>: " + linkify(obj.msg);
+								//el.innerHTML = linkify(el.innerHTML);
+								document.getElementById("received").appendChild(el);
+								updateScroll();
+								
+								if(obj.ev) {
+									if(obj.ev === 'userjoin') {
+										window.setTimeout(() => {
+										httpPost(global_url, {
+											event: 'userjoin',
+											user: name
+										});
+										}, 1000);
+									}else if(obj.ev === 'userleave') {
+										onlineuserslist.splice(onlineuserslist.indexOf(obj.evuser), 1);
+										updateUsersList();
+									}
+								}
+							}else if(obj.event) {
+								if(obj.event === 'userstartstyping') {
+									if(!userTypingList.includes(obj.user)) {
+										userTypingList.push(obj.user);
+										updateUserTypingText();
+									}
+								}else if(obj.event === 'userstopstyping') {
+									userTypingList.splice(userTypingList.indexOf(obj.user), 1);
+									updateUserTypingText();
+								}else if(obj.event === 'userjoin') {
+									if(!onlineuserslist.includes(obj.user)) {
+										onlineuserslist.push(obj.user);
+									}
+									updateUsersList();
+								}
+							}
+						}
+						httpGet(theUrl);
+					}
+				}
+				xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+				xmlHttp.send(null);
+			}
+			
+			function updateUsersList() {
+				userListEl.innerHTML = '';
+				for(let user of onlineuserslist) {
+					let el = document.createElement("li");
+					el.innerHTML = user;
+					userListEl.appendChild(el);
+				}
+								
+			}
+			
+			function linkify(inputText) {
+				var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+				//URLs starting with http://, https://, or ftp://
+				replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+				replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+				//URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+				replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+				replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+				//Change email addresses to mailto:: links.
+				replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+				replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+				return replacedText;
+			}
+			
+			function updateUserTypingText() {
+				if(userTypingList.length >= 1) {
+					let typetext = "";
+					for(let i = 0; i < userTypingList.length; i++) {
+						let user = userTypingList[i];
+						if(i === userTypingList.length - 1 && userTypingList.length !== 1) {
+							typetext += '<i> and ' + user + '</i>'
+						}else{
+							if(userTypingList.length > 1) {
+								typetext += '<i>' + user + ', </i>'
+							}else{
+								typetext += '<i>' + user + '</i>'
+							}
+						}
+					}
+					if(userTypingList.length > 1) {
+						userTypeEl.innerHTML = typetext + ' are typing...'
+					}else{
+						userTypeEl.innerHTML = typetext + ' is typing...'
+					}
+				}else{
+					userTypeEl.innerHTML = '';
+				}
+			}
+			function httpPost(url, params) {
+				let p = params;
+				p.id = Math.floor(Math.random() * 999999999);
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", url, true);
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xhr.send(JSON.stringify(p));
+			}
+
+			function send(e) {
+				httpPost(global_url, {
+					id: Math.floor(Math.random() * 999999), 
+					msg: document.getElementById("input").value,
+					author: name
+				});
+				httpPost(global_url, {
+					event: 'userstopstyping',
+					user: name
+				});
+				window.setTimeout(() => {
+				httpGet(global_url);
+				}, 100);
+				document.getElementById("input").value = "";
+				return false;
+			}
+
+			requestName();
+			// userjoin
+			httpPost(global_url, {
+				id: Math.floor(Math.random() * 99999),
+				msg: 'A new user has joined: ' + name,
+				author: 'SERVER',
+				ev: 'userjoin',
+				evuser: name
+			});
+			httpPost(global_url, {
+				event: 'userjoin',
+				user: name
+			});
+			
+			function updateScroll(){
+				var element = document.getElementById("received");
+				element.scrollTop = element.scrollHeight;
+			}
+			
+			function inputChange() {
+				httpPost(global_url, {
+					event: 'userstartstyping',
+					user: name
+				});
+				userTypeTimeout = window.setTimeout(() => {
+					httpPost(global_url, {
+						event: 'userstopstyping',
+						user: name
+					});
+				}, 5000);
+			}
+			window.addEventListener("beforeunload", function () {
+				httpPost(global_url, {
+						id: Math.floor(Math.random() * 99999),
+						msg: 'A user has left: ' + name,
+						author: 'SERVER',
+						ev: 'userleave',
+						evuser: name
+				});
+			});
+			httpGet(global_url);
+
+		</script>
+	</body>
+</html>

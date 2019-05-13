@@ -1,0 +1,170 @@
+#docsLogo {
+	width: 50px;
+	height: 50px;
+}
+
+#headerTop {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+
+#headerSide {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+#docTitle {
+	border: 0;
+	font-size: 14pt;
+}
+
+.menuAction {
+	margin-top: 3px;
+	font-weight: 400;
+	font-family: 'Roboto';
+	font-size: 11pt;
+	display: inline-block;
+	margin-right: 9px;
+}
+
+#savedText {
+	text-decoration: underline;
+	display: inline-block;
+	color: grey;
+	font-size: 11pt;
+	margin-left: 3px;
+}
+
+.seperator {
+	background-color: #bcbcbc;	
+}
+
+#headerSeperator {
+	width: 100%;
+	height: 1px;
+}
+
+#container {
+	width: 100vw;
+	display: flex;
+	flex-flow: column;
+}
+
+#pageContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	background-color: #F8F9FB;
+	height: 700px;
+	overflow: scroll;
+	padding-bottom: 100px;
+}
+
+#headerActions {
+	background-image: url('headerActions.png');
+	width: 300px;
+	height: 50px;
+	position: absolute;
+	right: 0;
+	top: 10px;
+}
+
+#page {
+	margin-top: 20px;
+	background-color: white;
+	width: 730px;
+	height: 900px;
+	box-shadow: 0px 0px 9px -4px rgba(0,0,0,0.45);
+	padding: 100px;
+	padding-top: 30px;
+}
+
+#filler {
+    flex: 1 1 auto;	
+}
+
+#msglist {
+    height: calc(100% - 480px);
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#msglist::-webkit-scrollbar {
+    display: none;
+}
+
+#input {
+	width: 100%;
+	height: 20px;
+	border: 2px solid grey;
+	padding: 13px;
+	padding-left: 2px;
+	font-size: 13pt;
+}
+
+
+html, body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+#imageupload {
+	background-color: grey;
+	width: 40px;
+	margin-top: 3px;
+	padding: 5px;
+	text-align: center;
+}
+
+#sidebar {
+	position: absolute;
+	right: 0;
+	background-image: url('sidebar.png');
+	width: 58px;
+	top: 72px;
+	height: 600px;
+	background-repeat: no-repeat;
+}
+
+#sideRuler {
+	background-image: url('sideruler.png');
+	width: 14px;
+	height: 500px;
+	position: absolute;
+	left: 0;
+	top: 122px;
+}
+
+#headerLower {
+	background-image: url('lower.png');
+	width: 100%;
+	height: 52px;
+	background-position-y: -2px;
+	background-repeat: no-repeat;
+}
+
+#textarea {
+	margin-top: 50px;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	resize: none;
+	font-size: 12pt;
+	font-family: 'Arial';
+}
+
+#textarea:focus {
+	outline: none;
+}
+
+.hide {
+	display: none
+}
+
+* {
+	font-family: 'Google Sans', 'Roboto', sans-serif;	
+}

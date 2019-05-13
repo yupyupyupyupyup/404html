@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>Classes</title>
+		<link href="https://ssl.gstatic.com/classroom/favicon.png" rel="icon">
+		<style>
+			html, body {
+				margin: 0;
+				padding: 0;
+				font-family: sans-serif;
+			}
+			#container {
+				display: flex;
+				height: 100vh;
+				max-height: 100vh;
+				flex-flow: column;
+				min-height: min-content;
+				overflow: hidden;
+			}
+			#listcontainer {
+				flex: 1;
+				overflow: hidden;
+			}
+			#received {
+				height: calc(100% - 50px);
+				background-color: #1e1e1e;
+				color: #76ff00;
+				display: flex;
+				list-style: none;
+				flex-direction: column;
+				overflow: scroll;
+				padding-bottom: 50px;
+			}
+			#filler {
+				flex: 1 1 auto;	
+			}
+			form {
+				height: 50px;
+				margin: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #1e1e1e;
+				flex-shrink: 0;
+			}
+			input {
+				background-color: #1e1e1e;
+				margin: 3px;
+				outline: none;
+				border: 0;
+				height: 35px;
+				color: #76ff00;
+				font-size: 12pt;
+			}
+			#name {
+				padding-left: 10px;
+			}
+			#input {
+				width: 100%;
+				padding-left: 10px;
+			}
+			li {
+				margin: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="listcontainer">
+				<div id="received">
+					<div id="filler"></div>
+				</div>
+			</div>
+			<form autocomplete="off" spellcheck="false" onsubmit="return send()">
+				<input id="input" placeholder="what do you wanna say?" />
+				<input type="submit" value="send">
+			</form>
+		</div>
+		<script>
+			let received = [];
+			let global_url = "https://httprelay.io/mcast/example739";
+			let name = 'TEMP';
+			function requestName() {
+				name = prompt('ENTER YOUR NAME');
+				if(name.toUpperCase() === 'kdlajd;lkjfkjfkldjs;lkfjsdf') {
+					alert('bruuuuh');
+					requestName();
+				}
+			}
+			function httpGet(theUrl)
+			{
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function() { 
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						let obj = JSON.parse(xmlHttp.responseText);
+						if(!received.includes(obj.id)) {
+							received.push(obj.id);
+							let el = document.createElement("li");
+							el.innerHTML = "<b>" + obj.author + "</b>: " + obj.msg;
+							document.getElementById("received").appendChild(el);
+							updateScroll();
+						}
+						httpGet(theUrl);
+					}
+				}
+				xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+				xmlHttp.send(null);
+			}
+			httpGet(global_url);
+			function httpPost(url, params) {
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", url, true);
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xhr.send(JSON.stringify(params));
+			}
+
+			function send(e) {
+				httpPost(global_url, {
+					id: Math.floor(Math.random() * 999999), 
+					msg: document.getElementById("input").value,
+					author: name
+				});
+				document.getElementById("input").value = "";
+				return false;
+			}
+
+			requestName();
+			// userjoin
+			httpPost(global_url, {
+					id: Math.floor(Math.random() * 99999),
+					msg: 'someone joined: ' + name,
+					author: 'SERVER'
+			});
+			
+			function updateScroll(){
+				var element = document.getElementById("received");
+				element.scrollTop = element.scrollHeight;
+			}
+			window.addEventListener("beforeunload", function () {
+				httpPost(global_url, {
+						id: Math.floor(Math.random() * 99999),
+						msg: 'someone left: ' + name,
+						author: 'SERVER'
+				});
+			});
+		</script>
+	</body>
+</html>

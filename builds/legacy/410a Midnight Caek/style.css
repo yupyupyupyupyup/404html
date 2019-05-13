@@ -1,0 +1,85 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    background-color: #1c1c1c;
+}
+
+#container {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+#header {
+    display:none!important
+}
+
+#header h1 {
+    color: white;
+    margin: 0;
+    font-size: 12pt;
+}
+
+#filler {
+    flex: 1 1 auto;	
+}
+
+#msglist {
+    height: calc(100% - 50px);
+    background-color: #1c1c1c;
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#msglist::-webkit-scrollbar {
+    display: none;
+}
+
+.message {
+    min-height: 20px;
+    background-color: #232323;
+    padding: 10px;
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 3px;
+    color: #789922;
+}
+
+#controls {
+    width: 100%;
+    bottom: 0;
+    padding-top: 10px;
+    padding: 10px;
+    flex-shrink: 0;
+    height: 50px;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#input {
+    background-color: #232323;
+    color: #789922;
+    width: 100%;
+    height: 40px;
+    padding-left: 5px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    font-size: 11pt;
+}
+
+input {
+    border-radius: 4px;
+    border: 0;
+}
+
+#sendButton {
+    display:none!important
+}

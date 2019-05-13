@@ -1,0 +1,1 @@
+window.localStorage.setItem("scca.settings", JSON.stringify({"test": "test"}));
