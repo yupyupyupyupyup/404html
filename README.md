@@ -25,3 +25,4 @@ with a link provided by a contributor.
 -Enjoy!
 ## 412 Bugfixes:
 -Removed herobrine
+-Removed issues because we can't trust John to leave it alone
